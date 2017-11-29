@@ -8,7 +8,7 @@ class League(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=40)
     league = models.ForeignKey(League)
-    comment = models.TextField()
+    note = models.CharField(max_length=400)
 
 class Player(models.Model):
     name = models.CharField(max_length=200)
@@ -29,7 +29,7 @@ class Player(models.Model):
     yellowcard = models.SmallIntegerField(default=0)
     redcard = models.SmallIntegerField(default=0)
     other = models.CharField(max_length=200)
-    comment = models.TextField()
+    note = models.CharField(max_length=400)
 
 class PremierLeague(models.Model):
 	  team = models.ForeignKey(Team)

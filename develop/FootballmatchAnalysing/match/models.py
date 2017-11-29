@@ -2,7 +2,7 @@
 from django.db import models
 
 # Create your models here.
-class Match(models.Model):
+class Recentmatch(models.Model):
     weekday = models.CharField(max_length=20)
     number = models.IntegerField(default=101)
     time = models.CharField(max_length=30)
@@ -32,4 +32,10 @@ class Futurematch(models.Model):
 class Odd(models.Model)
     match = models.ForeignKey(Historymatch)
     text = models.TextField()
+
+class Log(models.Model):
+    accident = models.CharField(max_length=40)
+    datetime = models.DateTimeField(auto_now_add=True)
+    next_time_period = models.SmallIntegerField(default=10)
+    note = models.CharField(max_length=400)
 
