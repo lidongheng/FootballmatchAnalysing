@@ -177,44 +177,23 @@
 		  <table class="table">
 		  	<thead>
 		  	  <tr>
-			  		<th style="width:10%">编号</th>
-			  		<th style="width:10%">时间</th>
+			  		<th style="width:15%">编号</th>
+			  		<th style="width:15%">时间</th>
+					<th style="width:15%">类别</th>
 			  		<th style="width:50%">内容</th>
-			  		<th style="width:30%">备注</th>
+			  		<th style="width:5%">备注</th>
 		  		</tr>
 		  	</thead>
+			<tbody>
+			{% for item in list %}
 		  	  <tr>
-            <td style="width:15%">1</td>
-            <td style="width:15%">2</td>
-            <td style="width:50%">3</td>
-            <td style="width:20%">4</td>
+                <td style="width:15%">{{ item.number }}</td>
+                <td style="width:15%">{{ item.league }}</td>
+                <td style="width:15%">{{ item.time }}</td>
+			    <td style="width:50%">{{ item.host_team }} vs {{ item.away_team }}</td>
+                <td style="width:5%">none</td>
 		  	  </tr>
-			  <tr>
-            <td style="width:15%">1</td>
-            <td style="width:15%">2</td>
-            <td style="width:50%">3</td>
-            <td style="width:20%">4</td>
-		  	  </tr>
-			  <tr>
-            <td style="width:15%">1</td>
-            <td style="width:15%">2</td>
-            <td style="width:50%">3</td>
-            <td style="width:20%">4</td>
-		  	  </tr>
-			  <tr>
-            <td style="width:15%">1</td>
-            <td style="width:15%">2</td>
-            <td style="width:50%">3</td>
-            <td style="width:20%">4</td>
-		  	  </tr>
-			  <tr>
-            <td style="width:15%">1</td>
-            <td style="width:15%">2</td>
-            <td style="width:50%">3</td>
-            <td style="width:20%">4</td>
-		  	  </tr>
-		  	<tbody>
-		  		
+			{% endfor %}
 		  	</tbody>
 		  </table>
 		</div>
