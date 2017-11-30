@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+	{% load static %}
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+	<style type="text/css">
+          /*设置body，不要让导航条（默认50px）压到下面的内容*/
+           body { padding-top: 70px; }
+
+           /*下拉菜单颜色*/
+          .dropdowncolor {
+              background-color: #202020;
+              color: white;
+              font-weight: bold;
+          }
+          /*轮播图片设置大小*/
+          .carousel-inner .item img {
+              height: 400px;
+              width: 100%;
+          }
+          /*调整圆角图片大小*/
+          .img-circle {
+              width: 250px;  
+          }
+          /*版权信息*/
+          #copyright {
+              background-color: #202020;
+              height: 100px;
+              color: #524f4f;
+              text-align: center;
+              font-size: 10px;
+              padding-top: 6px;
+          }
+      </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!-----------------------------------------导航条设计开始--------------------------------->
+	<!--黑色导航条样式为navbar-inverse，白色样式为default  ， .navbar-fixed-top导航条固定在顶端--> 
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+		  <!------button为实现响应式布局，如果在手机上查看，点击button就可以弹出菜单----> 
+		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="#">Brand</a>
+		</div>
+        
+		<!-- 当浏览器小于某个值时，点击button图标显示导航条的内容（注意这里的id与button 的id对应）—>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		  <!--具体菜单项--> 
+		  <ul class="nav navbar-nav">
+			<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+			<li><a href="#">Link</a></li>
+			<li><a href="#">Link</a></li>
+			<li><a href="#">Link</a></li>
+			<li><a href="#">Link</a></li>
+			<li><a href="#">Link</a></li>
+			<li><a href="#">Link</a></li>
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+				<li><a href="#">Action</a></li>
+				<li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">One more separated link</a></li>
+			  </ul>
+			</li>
+		  </ul>
+		  <!--搜索表单-->
+		  <form class="navbar-form navbar-left">
+			<div class="form-group">
+			  <input type="text" class="form-control" placeholder="Search">
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		  </form>
+		  <!--导航栏右部，一般的登录 注册-->
+		  <ul class="nav navbar-nav navbar-right">
+			<li><a href="#">Link</a></li>
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+				<li><a href="#">Action</a></li>
+				<li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li>
+			  </ul>
+			</li>
+		  </ul>
+		</div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<!------------------------------------------导航条结束-------------------------------->
+	<div class="container">
+	  <div class="col-md-9">
+	  	<h4>交战历史</h4>
+	  </div>
+	  <div class="row">
+	    <div class="col-md-9" role="main">
+	      <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">乌迪内斯</td>
+	          </tr>
+	        </thead>
+	        <tbody>
+		  	    <tr>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>欧赔</th>
+		  	      <th>亚盘</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	</tbody>
+	  	  </table>
+	    </div>	
+	  </div>
+	  <div class="col-md-9">
+	  	<h4>近期战绩</h4>
+	  </div>
+	  <div class="row">
+	  	<div class="col-md-9" role="main">
+	      <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">乌迪内斯</td>
+	          </tr>
+	        </thead>
+	        <tbody>
+		  	    <tr>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>欧赔</th>
+		  	      <th>亚盘</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	</tbody>
+	  	  </table>
+	    </div>	
+	  </div>
+	  <div class="row">
+	  	<div class="col-md-9" role="main">
+	      <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">佩鲁贾</td>
+	          </tr>
+	        </thead>
+	        <tbody>
+		  	    <tr>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>欧赔</th>
+		  	      <th>亚盘</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	</tbody>
+	  	  </table>
+	    </div>	
+	  </div>
+	  <div class="col-md-9">
+	  	<h4>积分榜</h4>
+	  </div>
+	  <div class="row">
+	  	<div class="col-md-9">
+	  	  <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">乌迪内斯</td>
+	          </tr>
+	        </thead>
+	        <tbody>
+		  	    <tr>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>欧赔</th>
+		  	      <th>亚盘</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	</tbody>
+	  	  </table>
+	  	</div>
+	  	<div class="col-md-9">
+	  	  <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">佩鲁贾</td>
+	          </tr>
+	        </thead>
+	        <tbody>
+		  	    <tr>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>欧赔</th>
+		  	      <th>亚盘</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	</tbody>
+	  	  </table>
+	  	</div>
+	  </div>
+	  <div class="col-md-9">
+	  	<h4>未来赛事</h4>
+	  </div>
+	  <div class="row">
+	  	<div class="col-md-9">
+	  	  <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">乌迪内斯</td>
+	          </tr>
+	        </thead>
+	        <tbody>
+		  	    <tr>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>欧赔</th>
+		  	      <th>亚盘</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	</tbody>
+	  	  </table>
+	  	</div>
+	  	<div class="col-md-9">
+	  	  <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">佩鲁贾</td>
+	          </tr>
+	        </thead>
+	        <tbody>
+		  	    <tr>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>欧赔</th>
+		  	      <th>亚盘</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	    <tr>
+		  	      <td>1</td>
+		  	      <td>2</td>
+		  	      <td>3</td>
+		  	      <td>4</td>
+		  	      <td>5</td>
+		  	      <td>6</td>
+		  	      <td>7</td>
+		  	      <td>8</td>
+		  	      <td>9</td>
+		  	    </tr>
+		  	</tbody>
+	  	  </table>
+	  	</div>
+	  </div>
+	</div>
+	<!--底部开始-->
+	<div id="copyright">
+      <p style="margin-top:10px">2017@FootballmatchAnalysing  All Rights Reserved. </p>
+      <p> 工信部备案号： 粤ICP备16002450号-1 </p>
+      <p> 联系方式：qq:419337193    邮箱：huoyi-20@163.com </p>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+  </body>
+</html>
