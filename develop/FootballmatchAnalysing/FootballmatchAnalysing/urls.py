@@ -42,5 +42,6 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^api/', include(router.urls)),
     url(r'^index/$', views.index),
+    url(r'^analyse$', views.analyse),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

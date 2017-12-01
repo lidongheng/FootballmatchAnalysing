@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>{{team.0}} vs {{team.1}} - 基本面分析</title>
 
     <!-- Bootstrap core CSS -->
 	{% load static %}
@@ -125,12 +125,6 @@
 	  <div class="row">
 	    <div class="col-md-9" role="main">
 	      <table class="table table-bordered">
-	        <thead>
-	          <tr>
-	          	<td colspan="9" align="center">乌迪内斯</td>
-	          </tr>
-	        </thead>
-	        <tbody>
 		  	    <tr>
 		  	      <th>赛事</th>
 		  	      <th>比赛日期</th>
@@ -155,12 +149,11 @@
 		  	      <td>{{item.daxiao}}</td>
 		  	    </tr>
 				{% endfor %}
-		  	</tbody>
 	  	  </table>
 	    </div>	
 	  </div>
 	  <div class="col-md-9">
-	  	<h4>主队主场近期战绩</h4>
+	  	<h4>主队近期战绩</h4>
 	  </div>
 	  <div class="row">
 	  	<div class="col-md-9" role="main">
@@ -199,7 +192,7 @@
 	    </div>	
 	  </div>
 	  <div class="col-md-9">
-	  	<h4>客队客场近期战绩</h4>
+	  	<h4>客队近期战绩</h4>
 	  </div>
 	  <div class="row">
 	  	<div class="col-md-9" role="main">
@@ -238,7 +231,7 @@
 	    </div>	
 	  </div>
 	  <div class="col-md-9">
-	  	<h4>近期战绩</h4>
+	  	<h4>主队主场近期战绩</h4>
 	  </div>
 	  <div class="row">
 	  	<div class="col-md-9" role="main">
@@ -276,6 +269,9 @@
 	  	  </table>
 	    </div>	
 	  </div>
+	  <div class="col-md-9">
+	  	<h4>客队客场近期战绩</h4>
+	  </div>
 	  <div class="row">
 	  	<div class="col-md-9" role="main">
 	      <table class="table table-bordered">
@@ -307,7 +303,7 @@
 		  	      <td>{{item.daxiao}}</td>
 		  	    </tr>
 				{% endfor %}
-				<tr><td colspan="8"><h4>{away_recent_match_same_summary}}</h4></td></tr>
+				<tr><td colspan="8"><h4>{{ away_recent_match_same_summary}}</h4></td></tr>
 		  	</tbody>
 	  	  </table>
 	    </div>	
@@ -320,7 +316,7 @@
 	  	  <table class="table table-bordered">
 	        <thead>
 	          <tr>
-	          	<td colspan="9" align="center">{{team.0}}</td>
+	          	<td colspan="10" align="center">{{team.0}}</td>
 	          </tr>
 	        </thead>
 	        <tbody>
@@ -333,6 +329,7 @@
 		  	      <th>失</th>
 		  	      <th>净</th>
 		  	      <th>积分</th>
+				  <th>排名</th>
 		  	      <th>胜率</th>
 		  	    </tr>
 				{% for item in host_team_league_table %}
@@ -356,7 +353,7 @@
 	  	  <table class="table table-bordered">
 	        <thead>
 	          <tr>
-	          	<td colspan="9" align="center">{{ team.1 }}</td>
+	          	<td colspan="10" align="center">{{ team.1 }}</td>
 	          </tr>
 	        </thead>
 	        <tbody>
@@ -369,6 +366,7 @@
 		  	      <th>失</th>
 		  	      <th>净</th>
 		  	      <th>积分</th>
+				  <th>排名</th>
 		  	      <th>胜率</th>
 		  	    </tr>
 				{% for item in away_team_league_table %}

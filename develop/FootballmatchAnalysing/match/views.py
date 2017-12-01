@@ -30,15 +30,16 @@ class Basedata(object):
         for item in rs:
             item='<table>'+item+'</table>'
             soup = BeautifulSoup(item, 'html5lib')
+            fid = soup.tr.attrs['fid']
             tr = soup.find_all('tr')[0]
             tds = tr.find_all('td')
             list1.append({
+            	'fid': fid,
                 'number': tds[0].a.contents[0],
                 'league': tds[1].text,
                 'time': tds[2].span.text,
                 'host_team': tds[3].a.contents[0],
                 'away_team': tds[5].a.contents[0],
-                'analyse': tds[8].a.attrs['href'],
             })
         return list1
 
@@ -49,11 +50,11 @@ class Basedata(object):
 
     def wubai_get_host_and_away_team(self, odds_content):
         team = []
-        list1.append(odds_content[0].select('.M_sub_title')[0].select('.team_name')[0].text)
-        list1.append(odds_content[0].select('.M_sub_title')[0].select('.team_name')[1].text)
+        team.append(odds_content[0].select('.M_sub_title')[0].select('.team_name')[0].text)
+        team.append(odds_content[0].select('.M_sub_title')[0].select('.team_name')[1].text)
         return team
 
-    def wubai_get_league_table(self,con,odds_content):
+    def wubai_get_league_table(self,odds_content,team):
         league_table = []
         for idx, tr in enumerate(odds_content[0].select(team)[0].find_all('tr')):
             if idx != 0:
@@ -149,7 +150,7 @@ class Basedata(object):
         return recent_the_same_land
 
     def wubai_get_recent_match_same_summary(self,odds_content,team):
-        return odds_content[0].select('.record')[0].select('#zhanji_11')[0].select('.M_content')[0].select('.bottom_info')[0].p.text
+        return odds_content[0].select('.record')[0].select(team)[0].select('.M_content')[0].select('.bottom_info')[0].p.text
 
 
     def wubai_future_match(self,odds_content,team):
@@ -186,7 +187,10 @@ def index(request):
     return HttpResponse(html)
 
 def analyse(request):
-    url = 'http://odds.500.com/fenxi/shuju-699400.shtml'
+    fid = request.GET['fid']
+    if fid == None:
+        return HttpResponseRedirect('/index/')
+    url = 'http://odds.500.com/fenxi/shuju-'+fid+'.shtml'
     hds = { "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8", 
     "Accept-Language": "zh-CN,zh;q=0.8", 
     "Accept-encoding": "gzip",
@@ -200,7 +204,7 @@ def analyse(request):
     base_data = Basedata(url,hds)
     con = base_data.wubai_connect()
     odds_content = base_data.wubai_get_base_data(con)
-    team = base_data.get_host_and_away_team(odds_content)
+    team = base_data.wubai_get_host_and_away_team(odds_content)
     host_team_league_table = base_data.wubai_get_league_table(odds_content,'.team_a')
     away_team_league_table = base_data.wubai_get_league_table(odds_content,'.team_b')
     fight_history = base_data.wubai_get_fight_history(odds_content)
