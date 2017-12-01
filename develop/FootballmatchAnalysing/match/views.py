@@ -10,7 +10,17 @@ from bs4 import BeautifulSoup
 # Create your views here.
 def index(request):
     url = 'http://trade.500.com/jczq/'
-    req = urllib.request.urlopen(url)
+    hds = { "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8", 
+    "Accept-Language": "zh-CN,zh;q=0.8", 
+    "Cache-Control": "no-cache", 
+    "Connection": "keep-alive", 
+    "Host": "trade.500.com", 
+    "Upgrade-Insecure-Requests": "1", 
+    "Pragma": "no-cache",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"}
+    reqhd = urllib.request.Request(url, headers = hds)
+    req = urllib.request.urlopen(reqhd)
     con = req.read().decode('gbk')
     rs = re.findall(r'<tr zid=.*?</tr>', con, re.S)
     list1 = []
