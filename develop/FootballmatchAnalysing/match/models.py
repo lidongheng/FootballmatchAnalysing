@@ -29,7 +29,7 @@ class Futurematch(models.Model):
     handicap = models.CharField(max_length=16,null=True)
     handicap_result = models.CharField(max_length=4,null=True)
 
-class Odd(models.Model)
+class Odd(models.Model):
     match = models.ForeignKey(Historymatch)
     text = models.TextField()
 

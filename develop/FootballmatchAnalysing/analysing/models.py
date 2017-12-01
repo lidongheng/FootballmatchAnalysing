@@ -32,7 +32,7 @@ class Player(models.Model):
     note = models.CharField(max_length=400)
 
 class PremierLeague(models.Model):
-	  team = models.ForeignKey(Team)
+    team = models.ForeignKey(Team)
     round = models.SmallIntegerField(default=0)
     win = models.SmallIntegerField(default=0)
     tie = models.SmallIntegerField(default=0)
