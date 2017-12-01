@@ -15,7 +15,7 @@ class Basedata(object):
         self.url = url
 
     def wubai_connect(self):
-        reqhd = urllib.request.Request(self.url, self.header)
+        reqhd = urllib.request.Request(self.url, headers = self.header)
         req = urllib.request.urlopen(reqhd)
         if req.info().get('Content-Encoding') == 'gzip':
             doc = req.read()
@@ -170,14 +170,14 @@ class Basedata(object):
 def index(request):
     url = 'http://trade.500.com/jczq/'
     hds = { "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8", 
-            "Accept-Language": "zh-CN,zh;q=0.8", 
-            "Cache-Control": "no-cache", 
-            "Connection": "keep-alive", 
-            "Host": "trade.500.com", 
-            "Upgrade-Insecure-Requests": "1", 
-            "Pragma": "no-cache",
-            "Upgrade-Insecure-Requests": "1",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"}
+    "Accept-Language": "zh-CN,zh;q=0.8", 
+    "Cache-Control": "no-cache", 
+    "Connection": "keep-alive", 
+    "Host": "trade.500.com", 
+    "Upgrade-Insecure-Requests": "1", 
+    "Pragma": "no-cache",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"}
     base_data = Basedata(url,hds)
     con = base_data.wubai_connect()
     match = base_data.wubai_get_today_match(con)
@@ -186,20 +186,20 @@ def index(request):
     return HttpResponse(html)
 
 def analyse(request):
-	url = 'http://odds.500.com/fenxi/shuju-699400.shtml'
+    url = 'http://odds.500.com/fenxi/shuju-699400.shtml'
     hds = { "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8", 
-            "Accept-Language": "zh-CN,zh;q=0.8", 
-            "Accept-encoding": "gzip",
-            "Cache-Control": "no-cache", 
-            "Connection": "keep-alive", 
-            "Host": "odds.500.com", 
-            "Upgrade-Insecure-Requests": "1", 
-            "Pragma": "no-cache",
-            "Upgrade-Insecure-Requests": "1",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"}
+    "Accept-Language": "zh-CN,zh;q=0.8", 
+    "Accept-encoding": "gzip",
+    "Cache-Control": "no-cache", 
+    "Connection": "keep-alive", 
+    "Host": "odds.500.com", 
+    "Upgrade-Insecure-Requests": "1", 
+    "Pragma": "no-cache",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"}
     base_data = Basedata(url,hds)
     con = base_data.wubai_connect()
-    odds_content = base_data.wubai_get_base_data(con):
+    odds_content = base_data.wubai_get_base_data(con)
     team = base_data.get_host_and_away_team(odds_content)
     host_team_league_table = base_data.wubai_get_league_table(odds_content,'.team_a')
     away_team_league_table = base_data.wubai_get_league_table(odds_content,'.team_b')
@@ -217,21 +217,21 @@ def analyse(request):
     away_future_match = base_data.wubai_future_match(odds_content,'.team_b')
     t = get_template('match/analyse.html')
     html = t.render(Context({'team': team, 
-    	'host_team_league_table': host_team_league_table,
-    	'away_team_league_table': away_team_league_table,
-    	'fight_history': fight_history,
-    	'fight_history_summary': fight_history_summary,
-    	'host_recent_match': host_recent_match,
-    	'away_recent_match': away_recent_match,
-    	'host_recent_match_summary': host_recent_match_summary,
-    	'away_recent_match_summary': away_recent_match_summary,
-    	'host_recent_match_same': host_recent_match_same,
-    	'away_recent_match_same': away_recent_match_same,
-    	'host_recent_match_same_summary': host_recent_match_same_summary,
-    	'away_recent_match_same_summary': away_recent_match_same_summary,
-    	'host_future_match': host_future_match,
-    	'away_future_match': away_future_match
-    	}))
+        'host_team_league_table': host_team_league_table,
+        'away_team_league_table': away_team_league_table,
+        'fight_history': fight_history,
+        'fight_history_summary': fight_history_summary,
+        'host_recent_match': host_recent_match,
+        'away_recent_match': away_recent_match,
+        'host_recent_match_summary': host_recent_match_summary,
+        'away_recent_match_summary': away_recent_match_summary,
+        'host_recent_match_same': host_recent_match_same,
+        'away_recent_match_same': away_recent_match_same,
+        'host_recent_match_same_summary': host_recent_match_same_summary,
+        'away_recent_match_same_summary': away_recent_match_same_summary,
+        'host_future_match': host_future_match,
+        'away_future_match': away_future_match
+    }))
     return HttpResponse(html)
 
 
