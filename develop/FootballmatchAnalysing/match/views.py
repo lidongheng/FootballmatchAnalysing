@@ -15,17 +15,18 @@ def index(request):
     rs = re.findall(r'<tr zid=.*?</tr>', con, re.S)
     list1 = []
     for item in rs:
+        item='<table>'+item+'</table>'
         soup = BeautifulSoup(item, 'html5lib')
-        league = soup.span.a.string
-        dict1 = {}
-        dict1['league'] = league
-        dict1['number'] = soup.a.text
-        dict1['time'] = soup.span.span.attrs['title']
-        dict1['time'] = dict1['time'][-5:]
-        c = soup.span.select('a[title]')
-        dict1['host_team'] = c[0].string
-        dict1['away_team'] = c[1].string
-        list1.append(dict1)
+        tr = soup.find_all('tr')[0]
+        tds = tr.find_all('td')
+        list1.append({
+            'number': tds[0].a.contents[0],
+            'league': tds[1].text,
+            'time': tds[2].span.text,
+            'host_team': tds[3].a.contents[0],
+            'away_team': tds[5].a.contents[0],
+            'analyse': tds[8].a.attrs['href'],
+        })
     t = get_template('match/index.html')
     html = t.render(Context({'list': list1}))
     return HttpResponse(html)
