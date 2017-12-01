@@ -3,14 +3,14 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Template, Context, RequestContext
-from urllib import request
+import urllib
 import re
 from bs4 import BeautifulSoup
 
 # Create your views here.
 def index(request):
     url = 'http://trade.500.com/jczq/'
-    req = request.urlopen(url)
+    req = urllib.request.urlopen(url)
     con = req.read().decode('gbk')
     rs = re.findall(r'<tr zid=.*?</tr>', con, re.S)
     list1 = []
