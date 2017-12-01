@@ -80,7 +80,7 @@ for idx, tr in enumerate(odds_content[0].select('.history')[0].select('.M_conten
         else:
         	  dict1['大小'] = tds[8].span.text
         data_list3.append(dict1)
-
+#主队近来比赛
 data_list4 = []
 for idx, tr in enumerate(odds_content[0].select('.record')[0].select('#team_zhanji_1')[0].select('.M_content')[0].find_all('tr')):
     if idx != 0 and idx < 12:
@@ -101,7 +101,7 @@ for idx, tr in enumerate(odds_content[0].select('.record')[0].select('#team_zhan
         else:
             dict1['大小'] = tds[7].span.text
         data_list4.append(dict1)
-
+#客队近来比赛
 data_list5 = []
 for idx, tr in enumerate(odds_content[0].select('.record')[0].select('#team_zhanji_0')[0].select('.M_content')[0].find_all('tr')):
     if idx != 0 and idx < 12:
@@ -125,7 +125,7 @@ for idx, tr in enumerate(odds_content[0].select('.record')[0].select('#team_zhan
 
 odds_content[0].select('.record')[0].select('#team_zhanji_1')[0].select('.M_content')[0].select('.bottom_info')[0].p.text
 odds_content[0].select('.record')[0].select('#team_zhanji_0')[0].select('.M_content')[0].select('.bottom_info')[0].p.text
-
+#主队主场近来比赛
 data_list6 = []
 for idx, tr in enumerate(odds_content[0].select('.record')[0].select('#zhanji_11')[0].select('.M_content')[0].find_all('tr')):
     if idx != 0 and idx < 12:
@@ -146,7 +146,7 @@ for idx, tr in enumerate(odds_content[0].select('.record')[0].select('#zhanji_11
         else:
             dict1['大小'] = tds[7].span.text
         data_list6.append(dict1)
-
+#客队客场近来比赛
 data_list7 = []
 for idx, tr in enumerate(odds_content[0].select('.record')[0].select('#zhanji_20')[0].select('.M_content')[0].find_all('tr')):
     if idx != 0 and idx < 12:
@@ -171,7 +171,7 @@ for idx, tr in enumerate(odds_content[0].select('.record')[0].select('#zhanji_20
 
 odds_content[0].select('.record')[0].select('#zhanji_11')[0].select('.M_content')[0].select('.bottom_info')[0].p.text
 odds_content[0].select('.record')[0].select('#zhanji_20')[0].select('.M_content')[0].select('.bottom_info')[0].p.text
-
+#主队未来比赛
 data_list8 = []
 for idx, tr in enumerate(odds_content[0].select('.integral')[0].select('.M_content')[0].select('.team_a')[0].find_all('tr')):
     if idx != 0:
@@ -182,7 +182,7 @@ for idx, tr in enumerate(odds_content[0].select('.integral')[0].select('.M_conte
         dict1['对阵'] = tds[2].text
         dict1['相隔'] = tds[3].text
         data_list8.append(dict1)
-
+#客队未来比赛
 data_list9 = []
 for idx, tr in enumerate(odds_content[0].select('.integral')[0].select('.M_content')[0].select('.team_b')[0].find_all('tr')):
     if idx != 0:

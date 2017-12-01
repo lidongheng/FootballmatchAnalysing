@@ -118,6 +118,7 @@
 	</nav>
 	<!------------------------------------------导航条结束-------------------------------->
 	<div class="container">
+	  <h1>{{ team.0 }} vs {{ team.1 }}</h1>
 	  <div class="col-md-9">
 	  	<h4>交战历史</h4>
 	  </div>
@@ -141,50 +142,97 @@
 		  	      <th>盘路</th>
 		  	      <th>大小</th>
 		  	    </tr>
+				{% for item in fight_history%}
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <td>{{item.league}}</td>
+		  	      <td>{{item.date}}</td>
+		  	      <td>{{item.match}}</td>
+		  	      <td>{{item.half}}</td>
+		  	      <td>{{item.result}}</td>
+		  	      <td>{{item.e_odd}}</td>
+		  	      <td>{{item.a_odd}}</td>
+		  	      <td>{{item.odd_result}}</td>
+		  	      <td>{{item.daxiao}}</td>
 		  	    </tr>
+				{% endfor %}
+		  	</tbody>
+	  	  </table>
+	    </div>	
+	  </div>
+	  <div class="col-md-9">
+	  	<h4>主队主场近期战绩</h4>
+	  </div>
+	  <div class="row">
+	  	<div class="col-md-9" role="main">
+	      <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">{{ team.0 }}</td>
+	          </tr>
+	        </thead>
+	        <tbody>
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>赔率</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
 		  	    </tr>
+				{% for item in host_recent_match %}
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <td>{{item.league}}</td>
+		  	      <td>{{item.date}}</td>
+		  	      <td>{{item.match}}</td>
+		  	      <td>{{item.odd}}</td>
+		  	      <td>{{item.half}}</td>
+		  	      <td>{{item.result}}</td>
+		  	      <td>{{item.odd_result}}</td>
+		  	      <td>{{item.daxiao}}</td>
 		  	    </tr>
+				{% endfor %}
+				<tr><td colspan="8"><h4>{{host_recent_match_summary}}</h4></td></tr>
+		  	</tbody>
+	  	  </table>
+	    </div>	
+	  </div>
+	  <div class="col-md-9">
+	  	<h4>客队客场近期战绩</h4>
+	  </div>
+	  <div class="row">
+	  	<div class="col-md-9" role="main">
+	      <table class="table table-bordered">
+	        <thead>
+	          <tr>
+	          	<td colspan="9" align="center">{{team.1}}</td>
+	          </tr>
+	        </thead>
+	        <tbody>
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <th>赛事</th>
+		  	      <th>比赛日期</th>
+		  	      <th>比分</th>
+		  	      <th>赔率</th>
+		  	      <th>半场</th>
+		  	      <th>赛果</th>
+		  	      <th>盘路</th>
+		  	      <th>大小</th>
 		  	    </tr>
+				{% for item in away_recent_match %}
+		  	    <tr>
+		  	      <td>{{item.league}}</td>
+		  	      <td>{{item.date}}</td>
+		  	      <td>{{item.match}}</td>
+		  	      <td>{{item.odd}}</td>
+		  	      <td>{{item.half}}</td>
+		  	      <td>{{item.result}}</td>
+		  	      <td>{{item.odd_result}}</td>
+		  	      <td>{{item.daxiao}}</td>
+		  	    </tr>
+				{% endfor %}
+				<tr><td colspan="8"><h4>{{away_recent_match_summary}}</h4></td></tr>
 		  	</tbody>
 	  	  </table>
 	    </div>	
@@ -197,7 +245,7 @@
 	      <table class="table table-bordered">
 	        <thead>
 	          <tr>
-	          	<td colspan="9" align="center">乌迪内斯</td>
+	          	<td colspan="9" align="center">{{ team.0 }}</td>
 	          </tr>
 	        </thead>
 	        <tbody>
@@ -205,57 +253,25 @@
 		  	      <th>赛事</th>
 		  	      <th>比赛日期</th>
 		  	      <th>比分</th>
+		  	      <th>赔率</th>
 		  	      <th>半场</th>
 		  	      <th>赛果</th>
-		  	      <th>欧赔</th>
-		  	      <th>亚盘</th>
 		  	      <th>盘路</th>
 		  	      <th>大小</th>
 		  	    </tr>
+				{% for item in host_recent_match_same %}
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <td>{{item.league}}</td>
+		  	      <td>{{item.date}}</td>
+		  	      <td>{{item.match}}</td>
+		  	      <td>{{item.odd}}</td>
+		  	      <td>{{item.half}}</td>
+		  	      <td>{{item.result}}</td>
+		  	      <td>{{item.odd_result}}</td>
+		  	      <td>{{item.daxiao}}</td>
 		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
+				{% endfor %}
+				<tr><td colspan="8"><h4>{{host_recent_match_same_summary}}</h4></td></tr>
 		  	</tbody>
 	  	  </table>
 	    </div>	
@@ -265,7 +281,7 @@
 	      <table class="table table-bordered">
 	        <thead>
 	          <tr>
-	          	<td colspan="9" align="center">佩鲁贾</td>
+	          	<td colspan="9" align="center">{{team.1}}</td>
 	          </tr>
 	        </thead>
 	        <tbody>
@@ -273,57 +289,25 @@
 		  	      <th>赛事</th>
 		  	      <th>比赛日期</th>
 		  	      <th>比分</th>
+		  	      <th>赔率</th>
 		  	      <th>半场</th>
 		  	      <th>赛果</th>
-		  	      <th>欧赔</th>
-		  	      <th>亚盘</th>
 		  	      <th>盘路</th>
 		  	      <th>大小</th>
 		  	    </tr>
+				{% for item in away_recent_match_same %}
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <td>{{item.league}}</td>
+		  	      <td>{{item.date}}</td>
+		  	      <td>{{item.match}}</td>
+		  	      <td>{{item.odd}}</td>
+		  	      <td>{{item.half}}</td>
+		  	      <td>{{item.result}}</td>
+		  	      <td>{{item.odd_result}}</td>
+		  	      <td>{{item.daxiao}}</td>
 		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
+				{% endfor %}
+				<tr><td colspan="8"><h4>{away_recent_match_same_summary}}</h4></td></tr>
 		  	</tbody>
 	  	  </table>
 	    </div>	
@@ -336,65 +320,35 @@
 	  	  <table class="table table-bordered">
 	        <thead>
 	          <tr>
-	          	<td colspan="9" align="center">乌迪内斯</td>
+	          	<td colspan="9" align="center">{{team.0}}</td>
 	          </tr>
 	        </thead>
 	        <tbody>
 		  	    <tr>
-		  	      <th>赛事</th>
-		  	      <th>比赛日期</th>
-		  	      <th>比分</th>
-		  	      <th>半场</th>
-		  	      <th>赛果</th>
-		  	      <th>欧赔</th>
-		  	      <th>亚盘</th>
-		  	      <th>盘路</th>
-		  	      <th>大小</th>
+		  	      <th>场次</th>
+		  	      <th>胜</th>
+		  	      <th>平</th>
+		  	      <th>负</th>
+		  	      <th>进</th>
+		  	      <th>失</th>
+		  	      <th>净</th>
+		  	      <th>积分</th>
+		  	      <th>胜率</th>
 		  	    </tr>
+				{% for item in host_team_league_table %}
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <td>{{ item.match }}</td>
+		  	      <td>{{ item.win }}</td>
+		  	      <td>{{ item.tie }}</td>
+		  	      <td>{{ item.defeat }}</td>
+		  	      <td>{{ item.goal }}</td>
+		  	      <td>{{ item.lose }}</td>
+		  	      <td>{{ item.diff }}</td>
+		  	      <td>{{ item.point }}</td>
+		  	      <td>{{ item.rank }}</td>
+				  <td>{{ item.win_percent }}</td>
 		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
+				{% endfor %}
 		  	</tbody>
 	  	  </table>
 	  	</div>
@@ -402,65 +356,35 @@
 	  	  <table class="table table-bordered">
 	        <thead>
 	          <tr>
-	          	<td colspan="9" align="center">佩鲁贾</td>
+	          	<td colspan="9" align="center">{{ team.1 }}</td>
 	          </tr>
 	        </thead>
 	        <tbody>
 		  	    <tr>
-		  	      <th>赛事</th>
-		  	      <th>比赛日期</th>
-		  	      <th>比分</th>
-		  	      <th>半场</th>
-		  	      <th>赛果</th>
-		  	      <th>欧赔</th>
-		  	      <th>亚盘</th>
-		  	      <th>盘路</th>
-		  	      <th>大小</th>
+		  	      <th>场次</th>
+		  	      <th>胜</th>
+		  	      <th>平</th>
+		  	      <th>负</th>
+		  	      <th>进</th>
+		  	      <th>失</th>
+		  	      <th>净</th>
+		  	      <th>积分</th>
+		  	      <th>胜率</th>
 		  	    </tr>
+				{% for item in away_team_league_table %}
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <td>{{ item.match }}</td>
+		  	      <td>{{ item.win }}</td>
+		  	      <td>{{ item.tie }}</td>
+		  	      <td>{{ item.defeat }}</td>
+		  	      <td>{{ item.goal }}</td>
+		  	      <td>{{ item.lose }}</td>
+		  	      <td>{{ item.diff }}</td>
+		  	      <td>{{ item.point }}</td>
+		  	      <td>{{ item.rank }}</td>
+				  <td>{{ item.win_percent }}</td>
 		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
+				{% endfor %}
 		  	</tbody>
 	  	  </table>
 	  	</div>
@@ -473,65 +397,24 @@
 	  	  <table class="table table-bordered">
 	        <thead>
 	          <tr>
-	          	<td colspan="9" align="center">乌迪内斯</td>
+	          	<td colspan="9" align="center">{{ team.0 }}</td>
 	          </tr>
 	        </thead>
 	        <tbody>
 		  	    <tr>
 		  	      <th>赛事</th>
 		  	      <th>比赛日期</th>
-		  	      <th>比分</th>
-		  	      <th>半场</th>
-		  	      <th>赛果</th>
-		  	      <th>欧赔</th>
-		  	      <th>亚盘</th>
-		  	      <th>盘路</th>
-		  	      <th>大小</th>
+		  	      <th>对阵</th>
+		  	      <th>间隔</th>
 		  	    </tr>
+				{% for item in host_future_match %}
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <td>{{item.league}}</td>
+		  	      <td>{{item.date}}</td>
+		  	      <td>{{item.match}}</td>
+		  	      <td>{{item.period}}</td>
 		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
+				{% endfor %}
 		  	</tbody>
 	  	  </table>
 	  	</div>
@@ -539,65 +422,24 @@
 	  	  <table class="table table-bordered">
 	        <thead>
 	          <tr>
-	          	<td colspan="9" align="center">佩鲁贾</td>
+	          	<td colspan="9" align="center">{{ team.1 }}</td>
 	          </tr>
 	        </thead>
 	        <tbody>
 		  	    <tr>
 		  	      <th>赛事</th>
 		  	      <th>比赛日期</th>
-		  	      <th>比分</th>
-		  	      <th>半场</th>
-		  	      <th>赛果</th>
-		  	      <th>欧赔</th>
-		  	      <th>亚盘</th>
-		  	      <th>盘路</th>
-		  	      <th>大小</th>
+		  	      <th>对阵</th>
+		  	      <th>间隔</th>
 		  	    </tr>
+				{% for item in away_future_match %}
 		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
+		  	      <td>{{item.league}}</td>
+		  	      <td>{{item.date}}</td>
+		  	      <td>{{item.match}}</td>
+		  	      <td>{{item.period}}</td>
 		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
-		  	    <tr>
-		  	      <td>1</td>
-		  	      <td>2</td>
-		  	      <td>3</td>
-		  	      <td>4</td>
-		  	      <td>5</td>
-		  	      <td>6</td>
-		  	      <td>7</td>
-		  	      <td>8</td>
-		  	      <td>9</td>
-		  	    </tr>
+				{% endfor %}
 		  	</tbody>
 	  	  </table>
 	  	</div>
