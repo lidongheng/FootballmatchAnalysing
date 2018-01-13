@@ -174,9 +174,12 @@ class Basedata(object):
                 tds = tr.find_all('td')
                 dict1 = {}
                 dict1['league'] = tds[0].text
-                dict1['date'] = tds[1].contents[0]
-                dict1['match'] = tds[2].text
-                dict1['period'] = tds[3].text
+                dict1['time'] = tds[1].contents[0]
+                temp = tds[2].text.strip().split('VS')
+                dict1['host_team'] = temp[0].strip()
+                dict1['away_team'] = temp[1].strip()
+                dict1['day'] = tds[3].text
+                dict1['hours'] = '-'
                 future_match.append(dict1)
         return future_match
 
@@ -306,6 +309,8 @@ class Adddata(object):
         teams = soup.find_all('section')[8].find_all('table')
         host_future_match = []
         away_future_match = []
+        big_month = [1,3,5,7,8,10,12]
+        small_month = [2,4,6,9,11]
         by,bmon,bd,bh,bm,bs = self.__wangyi_date_handle(match_time)
         t1 = datetime.datetime(by,bmon,bd,bh,bm,bs)
         for idx, tr in enumerate(teams[0].find_all('tr')):
@@ -314,6 +319,17 @@ class Adddata(object):
                 host_future_time = '20'+tds[1].text+':00'
                 cy,cmon,cd,ch,cm,cs = self.__wangyi_date_handle(host_future_time)
                 daya = int(cd)-int(bd)
+                if daya < 0:
+                    if bmon in big_month:
+                        daya = 31 - bd + cd
+                    else:
+                        if bmon == 2:
+                            if by%4 == 0:
+                                daya = 29 - bd + cd
+                            else:
+                                daya = 28 - bd + cd
+                        else:
+                            daya = 30 - bd + cd
                 t2 = datetime.datetime(cy,cmon,cd,ch,cm,cs)
                 hoursa = int((t2-t1).total_seconds()/3600)
                 host_future_match.append({
@@ -330,6 +346,17 @@ class Adddata(object):
                 away_future_time = '20'+tds[1].text+':00'
                 dy,dmon,dd,dh,dm,ds = self.__wangyi_date_handle(away_future_time)
                 dayb = int(dd)-int(bd)
+                if dayb < 0:
+                    if bmon in big_month:
+                        dayb = 31 - bd + dd
+                    else:
+                        if bmon == 2:
+                            if by%4 == 0:
+                                dayb = 29 - bd + dd
+                            else:
+                                dayb = 28 - bd + dd
+                        else:
+                            dayb = 30 - bd + dd
                 t3 = datetime.datetime(dy,dmon,dd,dh,dm,ds)
                 hoursb = int((t3-t1).total_seconds()/3600)
                 away_future_match.append({
@@ -341,6 +368,57 @@ class Adddata(object):
                     'hours': hoursb,
                 })
         return host_future_match,away_future_match
+
+def all_get_future_match(wubai_host_future_match,wubai_away_future_match,wangyi_host_future_match,wangyi_away_future_match):
+    '''
+    先删除本场比赛，再合并两个网站的数据
+    '''
+    if len(wangyi_host_future_match) < 5 and len(wangyi_away_future_match) < 5:
+        return wangyi_host_future_match,wangyi_away_future_match
+    host_future_match = []
+    away_future_match = []
+    '''
+    先确定主队和客队
+    '''
+    if len(wangyi_host_future_match) >= 3:
+        a = wangyi_host_future_match[0]['host_team']
+        b = wangyi_host_future_match[0]['away_team']
+        c = wangyi_host_future_match[1]['host_team']
+        d = wangyi_host_future_match[1]['away_team']
+        e = wangyi_host_future_match[2]['host_team']
+        f = wangyi_host_future_match[2]['away_team']
+        if (a == c) or (a == d):
+            if (a == e) or (a == f):
+                host_team = a
+        else:
+            if (b == c) or (b == d):
+                host_team = b
+    if len(wangyi_away_future_match) >= 3:
+        a = wangyi_away_future_match[0]['host_team']
+        b = wangyi_away_future_match[0]['away_team']
+        c = wangyi_away_future_match[1]['host_team']
+        d = wangyi_away_future_match[1]['away_team']
+        e = wangyi_away_future_match[2]['host_team']
+        f = wangyi_away_future_match[2]['away_team']
+        if (a == c) or (a == d):
+            if (a == e) or (a == f):
+                away_team = a
+        else:
+            if (b == c) or (b == d):
+                away_team = b
+    if wangyi_host_future_match[0]['host_team'] == host_team and wangyi_host_future_match[0]['away_team'] == away_team:
+        wangyi_host_future_match = wangyi_host_future_match[1:]
+    if wangyi_away_future_match[0]['host_team'] == host_team and wangyi_away_future_match[0]['away_team'] == away_team:
+        wangyi_away_future_match = wangyi_away_future_match[1:]
+    for index in range(0,len(wubai_host_future_match)):
+        if len(wangyi_host_future_match) > index:
+            host_future_match.append(wangyi_host_future_match[index])
+            away_future_match.append(wangyi_away_future_match[index])
+        else:
+            host_future_match.append(wubai_host_future_match[index])
+            away_future_match.append(wubai_away_future_match[index])
+    return host_future_match,away_future_match
+
 
 
 
@@ -393,13 +471,14 @@ def analyse(request):
     away_recent_match_same = base_data.wubai_get_recent_match_same(odds_content,'#zhanji_20')
     host_recent_match_same_summary = base_data.wubai_get_recent_match_same_summary(odds_content,'#zhanji_11')
     away_recent_match_same_summary = base_data.wubai_get_recent_match_same_summary(odds_content,'#zhanji_20')
-    #host_future_match = base_data.wubai_future_match(odds_content,'.team_a')
-    #away_future_match = base_data.wubai_future_match(odds_content,'.team_b')
+    wubai_host_future_match = base_data.wubai_future_match(odds_content,'.team_a')
+    wubai_away_future_match = base_data.wubai_future_match(odds_content,'.team_b')
     match_round = base_data.wubai_get_match_round(con)
     host_league_name = base_data.wubai_get_host_team_league_name(team[0])
     add_data = Adddata()
     url = add_data.wangyi_get_page_url(host_league_name,match_round)
-    host_future_match,away_future_match = add_data.wangyi_get_future_match(url)
+    wangyi_host_future_match,wangyi_away_future_match = add_data.wangyi_get_future_match(url)
+    host_future_match,away_future_match = all_get_future_match(wubai_host_future_match,wubai_away_future_match,wangyi_host_future_match,wangyi_away_future_match)
     t = get_template('match/analyse.html')
     html = t.render(Context({'team': team, 
         'host_team_league_table': host_team_league_table,
