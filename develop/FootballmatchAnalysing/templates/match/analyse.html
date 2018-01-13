@@ -415,7 +415,7 @@
 	  </div>
 	  <div class="row">
 	  	<div class="col-md-9">
-	  	  <table class="table table-bordered">
+	  	  <table class="table table-bordered" id="host_future_match">
 	        <thead>
 	          <tr>
 	          	<td colspan="9" align="center">{{ team.0 }}</td>
@@ -426,21 +426,28 @@
 		  	      <th>赛事</th>
 		  	      <th>比赛日期</th>
 		  	      <th>对阵</th>
-		  	      <th>间隔</th>
+		  	      <th>时间</th>
+				  <th>小时数</th>
 		  	    </tr>
 				{% for item in host_future_match %}
 		  	    <tr>
 		  	      <td>{{item.league}}</td>
-		  	      <td>{{item.date}}</td>
-		  	      <td>{{item.match}}</td>
-		  	      <td>{{item.period}}</td>
+		  	      <td>{{item.time}}</td>
+		  	      <td>{{item.host_team }} vs {{ item.away_team }}</td>
+		  	      <td>{{item.day}}</td>
+				  <td>{{item.hours}}</td>
 		  	    </tr>
 				{% endfor %}
+				<tr>
+				  <td colspan="5">
+					<p id="host_condition">与上场比赛相距 <span id="host_last_match"></span> 天，属于<span id="host_last_condition"></span>；与下场比赛相距 <span id="host_next_match"></span> 小时，属于<span id="host_next_condition"></span>。</p>
+				  </td>
+				</tr>
 		  	</tbody>
 	  	  </table>
 	  	</div>
 	  	<div class="col-md-9">
-	  	  <table class="table table-bordered">
+	  	  <table class="table table-bordered" id="away_future_match">
 	        <thead>
 	          <tr>
 	          	<td colspan="9" align="center">{{ team.1 }}</td>
@@ -451,16 +458,23 @@
 		  	      <th>赛事</th>
 		  	      <th>比赛日期</th>
 		  	      <th>对阵</th>
-		  	      <th>间隔</th>
+		  	      <th>时间</th>
+				  <th>小时数</th>
 		  	    </tr>
 				{% for item in away_future_match %}
 		  	    <tr>
 		  	      <td>{{item.league}}</td>
-		  	      <td>{{item.date}}</td>
-		  	      <td>{{item.match}}</td>
-		  	      <td>{{item.period}}</td>
+		  	      <td>{{item.time}}</td>
+		  	      <td>{{item.host_team}} vs {{ item.away_team}}</td>
+		  	      <td>{{item.day}}</td>
+				  <td>{{item.hours}}</td>
 		  	    </tr>
 				{% endfor %}
+				<tr>
+				  <td colspan="5">
+					<p id="away_condition">与上场比赛相距 <span id="away_last_match"></span> 天，属于<span id="away_last_condition"></span>；与下场比赛相距 <span id="away_next_match"></span> 小时，属于<span id="away_next_condition"></span>。</p>
+				  </td>
+				</tr>
 		  	</tbody>
 	  	  </table>
 	  	</div>
@@ -475,5 +489,86 @@
     <script src="{% static "js/jquery-1.12.4.min.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
 	<script src="{% static "js/statstics.js" %}"></script>
+	<script>
+	    function datedifference(sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  
+            var dateSpan,tempDate,iDays;
+			sDate1 = Date.parse(sDate1);
+			sDate2 = Date.parse(sDate2);
+			dateSpan = sDate2 - sDate1;
+			dateSpan = Math.abs(dateSpan);
+			iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+            return iDays
+        };
+		var host_s1 = '20'+$('#host_rencent_match > tbody >tr:eq(1) > td:eq(1)').html();
+		var host_s2 = '20'+$('#host_rencent_match > tbody >tr:eq(2) > td:eq(1)').html();
+        var host_delta1 = datedifference(host_s1,host_s2); 
+		$('#host_last_match').html(host_delta1);
+		var host_s5 = parseInt($('#host_future_match > tbody >tr:eq(1) > td:eq(4)').html());
+		if(host_s5 <= 0){
+		    host_s5 = parseInt($('#host_future_match > tbody >tr:eq(2) > td:eq(4)').html());
+		}
+		$('#host_next_match').html(host_s5);
+		var away_s1 = '20'+$('#away_rencent_match > tbody >tr:eq(1) > td:eq(1)').html();
+		var away_s2 = '20'+$('#away_rencent_match > tbody >tr:eq(2) > td:eq(1)').html();
+        var away_delta1 = datedifference(away_s1,away_s2);
+		$('#away_last_match').html(away_delta1);
+		var away_s5 = parseInt($('#away_future_match > tbody >tr:eq(1) > td:eq(4)').html());
+		if(away_s5 <= 0){
+		    away_s5 = parseInt($('#away_future_match > tbody >tr:eq(2) > td:eq(4)').html());
+		}
+		$('#away_next_match').html(away_s5);
+		if(host_delta1 <= 2){
+		    $('#host_last_condition').html('重度疲劳');
+			$('#host_last_condition').css({color:'red'});
+		}else if(host_delta1 >= 3 && host_delta1<=4){
+		    $('#host_last_condition').html('中度疲劳');
+			$('#host_last_condition').css({color:'blue'});
+		}else if(host_delta1 >= 5 && host_delta1<= 6){
+		    $('#host_last_condition').html('轻度疲劳');
+			$('#host_last_condition').css({color:'pink'});
+		}else{
+		    $('#host_last_condition').html('不疲劳');
+		}
+		if(host_s5 <= 58){
+		    $('#host_next_condition').html('重度分心');
+			$('#host_next_condition').css({color:'red'});
+		}else if(host_s5 >= 59 && host_s5<=105){
+		    $('#host_next_condition').html('中度分心');
+			$('#host_next_condition').css({color:'blue'});
+		}else if(host_s5 >= 106 && host_s5<= 120){
+		    $('#host_next_condition').html('轻度分心');
+			$('#host_next_condition').css({color:'pink'});
+		}else{
+		   $('#host_next_condition').html('不分心');
+		}
+		var away_temp1 = '';
+		if(away_delta1 <= 2){
+		    $('#away_last_condition').html('重度疲劳');
+			$('#away_last_condition').css({color:'red'});
+		}else if(away_delta1 >= 3 && away_delta1<=4){
+		    $('#away_last_condition').html('中度疲劳');
+			$('#away_last_condition').css({color:'blue'});
+		}else if(away_delta1 >= 5 && away_delta1<= 6){
+		    $('#away_last_condition').html('轻度疲劳');
+			$('#away_last_condition').css({color:'pink'});
+		}else{
+		   $('#away_last_condition').html('不疲劳');
+		}
+		var away_temp2 = '';
+		if(away_s5 <= 58){
+		    $('#away_next_condition').html('重度分心');
+			$('#away_next_condition').css({color:'red'});
+		}else if(away_s5 >= 59 && away_s5<=105){
+		    $('#away_next_condition').html('中度分心');
+			$('#away_next_condition').css({color:'blue'});
+		}else if(away_s5 >= 106 && away_s5<= 120){
+		    $('#away_next_condition').html('轻度分心');
+			$('#away_next_condition').css({color:'pink'});
+		}else{
+		   $('#away_next_condition').html('不分心');
+		}
+
+
+	</script>
   </body>
 </html>
