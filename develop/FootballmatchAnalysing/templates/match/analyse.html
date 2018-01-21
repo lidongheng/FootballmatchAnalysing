@@ -44,6 +44,11 @@
 		  p {
 		       font-size: 18px;
 		  }
+		  .table i{
+		      font-style:normal;
+              display: inline-block;
+              width:40px;
+		  }
       </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -479,6 +484,86 @@
 	  	  </table>
 	  	</div>
 	  </div>
+	  <div class="col-md-9">
+	    <h4>欧赔展示</h4>
+	    <div class="row">
+	      <div class="col-md-9">
+	      	<table class="table table-bordered">
+	      	  <thead>
+	      		<tr>
+	      		  <th>序号</th>
+	      		  <th>赔率公司</th>
+	      		  <th colspan="2">赔率</th>
+	      		  <th>赔付率</th>
+	      		  <th>时间</th>
+	      		</tr>
+	      	  </thead>
+	      	  <tbody>
+	      	  {% for key,value in wubai_ouzhi.items %}
+	      	  	<tr>
+	      	  	  <td rowspan="2" style="text-align:center;vertical-align:middle;">{{value.order}}</td>
+	      	  	  <td rowspan="2" style="text-align:center;vertical-align:middle;">{{ key }}</td>
+	      	  	  <td>初</td>
+	      	  	  <td><i class="ori_win_odd">{{value.ori_win_odd}}</i><i class="ori_tie_odd">{{value.ori_tie_odd}}</i><i class="ori_def_odd">{{value.ori_def_odd}}</i></td>
+	      	  	  <td>{{value.ori_peifu}}</td>
+	      	  	  <td>{{value.ori_time}}</td>
+	      	  	</tr>
+	      	  	<tr>
+	      	  	  <td>终</td>
+	      	  	  <td><i class="now_win_odd">{{value.now_win_odd}}</i><i class="now_tie_odd">{{value.now_tie_odd}}</i><i class="now_def_odd">{{value.now_def_odd}}</i></td>
+	      	  	  <td>{{value.now_peifu}}</td>
+	      	  	  <td>{{value.now_time}}</td>
+	      	  	</tr>
+	      	  {% endfor %}
+	      	  </tbody>
+	      	</table>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-md-12">
+	  	<h4>亚盘展示</h4>
+	  	<div class="row">
+	  	  <div class="col-md-12">
+	  	  	<table class="table table-bordered" style="width=100%;">
+	  	  	  <thead>
+	  	  	    <tr>
+	  	  	      <th colspan="6">即时盘</th>
+	  	  	      <th colspan="4">初盘</th>
+	  	  	    </tr>
+	  	  	    <tr>
+	  	  	  	  <th>序号</th>
+	  	  	  	  <th>公司</th>
+	  	  	  	  <th>水位</th>
+	  	  	  	  <th>盘口</th>
+	  	  	  	  <th>水位</th>
+	  	  	  	  <th>变化时间</th>
+	  	  	  	  <th>水位</th>
+	  	  	  	  <th>盘口</th>
+	  	  	  	  <th>水位</th>
+	  	  	  	  <th>变化时间</th>
+	  	  	  	</tr>
+	  	  	  </thead>
+	  	  	  <tbody>
+	  	  	  {% for yazhi in wubai_yazhi %}
+	  	  	  	<tr>
+	  	  	  	  <td>{{yazhi.order}}</td>
+	  	  	  	  <td>{{yazhi.company}}</td>
+	  	  	  	  <td class="yazhi_color">{{yazhi.now_up_odd}}</td>
+	  	  	  	  <td class="now_ya_odd_color">{{yazhi.now_ya_odd}}</td>
+	  	  	  	  <td class="yazhi_color">{{yazhi.now_down_odd}}</td>
+	  	  	  	  <td>{{yazhi.now_time}}</td>
+	  	  	  	  <td>{{yazhi.ori_up_odd}}</td>
+	  	  	  	  <td>{{yazhi.ori_ya_odd}}</td>
+	  	  	  	  <td>{{yazhi.ori_down_odd}}</td>
+	  	  	  	  <td>{{yazhi.ori_time}}</td>
+	  	  	  	  <div class="ya_shuzi" style="display:none;"><em>{{yazhi.now_ya_odd_shuzi}}</em><em>{{yazhi.ori_ya_odd_shuzi}}</em></div>
+	  	  	  	</tr>
+	  	  	  {% endfor %}
+	  	  	  </tbody>
+	  	  	</table>
+	  	  </div>
+	  	</div>
+	  </div>
 	</div>
 	<!--底部开始-->
 	<div id="copyright">
@@ -567,6 +652,81 @@
 		}else{
 		   $('#away_next_condition').html('不分心');
 		}
+		$('.yazhi_color').each(function(){
+            var text = $(this).html();
+            var str = text.substring(text.length,text.length-1);
+            if(str == '↑'){
+                $(this).css('color','red');
+            }else if(str == '↓'){
+                $(this).css('color','green');
+            }
+		});
+		$('.ya_shuzi').each(function(){
+			var now_ya_odd = $(this).children("em").first().html();
+			var ori_ya_odd = $(this).children("em").last().html();
+			if(now_ya_odd != ori_ya_odd){
+                if(now_ya_odd.substring(0,1) == '-' && ori_ya_odd.substring(0,1) == '-'){
+                	if(parseFloat(now_ya_odd.substring(1,now_ya_odd.length)) > parseFloat(ori_ya_odd.substring(1,ori_ya_odd.length))){
+                		$(this).parent().find('.now_ya_odd_color').css('color','red');
+                	}else{
+                		$(this).parent().find('.now_ya_odd_color').css('color','green');
+                	}
+                }else if(now_ya_odd.substring(0,1) != '-' && ori_ya_odd.substring(0,1) != '-'){
+                    if(parseFloat(now_ya_odd) > parseFloat(ori_ya_odd)){
+                		$(this).parent().find('.now_ya_odd_color').css('color','red');
+                	}else{
+                		$(this).parent().find('.now_ya_odd_color').css('color','green');
+                	}
+                }else if(now_ya_odd.substring(0,1) == '-' && ori_ya_odd.substring(0,1) != '-'){
+                	$(this).parent().find('.now_ya_odd_color').css('color','green');
+                }else if(now_ya_odd.substring(0,1) != '-' && ori_ya_odd.substring(0,1) == '-')
+                    $(this).parent().find('.now_ya_odd_color').css('color','red');
+		    }
+		});
+		$('.ori_win_odd').each(function(){
+			var ori_odd_shuzi = $(this).html();
+			var b = $(this).parent().parent().next().find('.now_win_odd');
+			var now_odd_shuzi = b.html();
+			if(ori_odd_shuzi != now_odd_shuzi){
+				if(parseFloat(now_odd_shuzi) > parseFloat(ori_odd_shuzi)){
+					b.html(now_odd_shuzi+'↑');
+					b.css('color','red');
+				}else{
+					b.html(now_odd_shuzi+'↓');
+					b.css('color','green');
+				}
+			}
+		});
+		$('.ori_tie_odd').each(function(){
+			var ori_odd_shuzi = $(this).html();
+			var b = $(this).parent().parent().next().find('.now_tie_odd');
+			var now_odd_shuzi = b.html();
+			if(ori_odd_shuzi != now_odd_shuzi){
+				if(parseFloat(now_odd_shuzi) > parseFloat(ori_odd_shuzi)){
+					b.html(now_odd_shuzi+'↑');
+					b.css('color','red');
+				}else{
+					b.html(now_odd_shuzi+'↓');
+					b.css('color','green');
+				}
+			}
+		});
+		$('.ori_def_odd').each(function(){
+			var ori_odd_shuzi = $(this).html();
+			var b = $(this).parent().parent().next().find('.now_def_odd');
+			var now_odd_shuzi = b.html();
+			if(ori_odd_shuzi != now_odd_shuzi){
+				if(parseFloat(now_odd_shuzi) > parseFloat(ori_odd_shuzi)){
+					b.html(now_odd_shuzi+'↑');
+					b.css('color','red');
+				}else{
+					b.html(now_odd_shuzi+'↓');
+					b.css('color','green');
+				}
+			}
+		});
+		
+		
 
 
 	</script>

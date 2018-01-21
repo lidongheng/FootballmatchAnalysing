@@ -27,6 +27,143 @@ class Basedata(object):
             con = req.read().decode('gbk')
         return con
 
+    def t(self,strr):
+        list5 = strr.split('.')
+        if len(list5) == 1:
+            strr = list5[0] + '.00'
+        else:
+            if len(list5[1]) == 1:
+                strr = list5[0] + '.' + list5[1] + '0'
+            else:
+                strr = list5[0]+'.'+list5[1]
+        return strr
+
+    def wubai_get_ouzhi(self,fid):
+        params = {}
+        params['_'] = str(time.time()*1000).split('.')[0]
+        params['fid'] = fid
+        params['r'] = '1'
+        params['type'] = 'europe'
+        company = {'1':'竞彩', '293':'威廉希尔', '2':'立博', '3':'Bet365', '6': '韦德', '4':'Interwetten', '5': '澳彩', '122':'香港马会'}
+        company_list = [1,293,2,3,6,4,5,122]
+        wubai_ouzhi = {}
+        for item in company_list:
+            url = self.url+'?'+'_='+params['_']+"&fid="+params['fid']+"&cid="+str(item)+"&r="+params['r']+"&type="+params['type']
+            print(url)
+            reqhd = urllib.request.Request(url, headers = self.header)
+            req = urllib.request.urlopen(reqhd)
+            if req.info().get('Content-Encoding') == 'gzip':
+                doc = req.read()
+                con = gzip.decompress(doc).decode('gbk')
+            else:
+                con = req.read().decode('gbk')
+            array_str = con.strip()[1:-1]
+            print(array_str)
+            list1 = re.findall(r'\[.*?\]', array_str, re.S)
+            print(list1)
+            list2 = []
+            if len(list1) == 1:
+                dict1 = {}
+                list1 = list1[0][1:-1].split(',')
+                dict1['order'] = str(item)
+                dict1['ori_win_odd'] = self.t(list1[0])
+                dict1['ori_tie_odd'] = self.t(list1[1])
+                dict1['ori_def_odd'] = self.t(list1[2])
+                dict1['ori_peifu'] = list1[3]
+                dict1['ori_time'] = list1[4][1:-1]
+                dict1['now_win_odd'] = self.t(list1[0])
+                dict1['now_tie_odd'] = self.t(list1[1])
+                dict1['now_def_odd'] = self.t(list1[2])
+                dict1['now_peifu'] = list1[3]
+                dict1['now_time'] = list1[4][1:-1]
+                dict1['now_win_cond'] = '0'
+                dict1['now_tie_cond'] = '0'
+                dict1['now_def_cond'] = '0'
+                wubai_ouzhi[company[str(item)]] = dict1
+            else:
+                list2.append(list1[-1][1:-1].split(','))
+                list2.append(list1[0][1:-1].split(','))
+                dict1 = {}
+                dict1['order'] = str(item)
+                dict1['ori_win_odd'] = self.t(list2[0][0])
+                dict1['ori_tie_odd'] = self.t(list2[0][1])
+                dict1['ori_def_odd'] = self.t(list2[0][2])
+                dict1['ori_peifu'] = list2[0][3]
+                dict1['ori_time'] = list2[0][4][1:-1]
+                dict1['now_win_odd'] = self.t(list2[1][0])
+                dict1['now_tie_odd'] = self.t(list2[1][1])
+                dict1['now_def_odd'] = self.t(list2[1][2])
+                dict1['now_peifu'] = list2[1][3]
+                dict1['now_time'] = list2[1][4][1:-1]
+                dict1['now_win_cond'] = list2[1][5]
+                dict1['now_tie_cond'] = list2[1][6]
+                dict1['now_def_cond'] = list2[1][7]
+                wubai_ouzhi[company[str(item)]] = dict1
+        return wubai_ouzhi
+
+    def wubai_get_yazhi(self):
+        yazhi_level = {
+        '受四球': '-4',
+        '受三球半/四球': '-3.75',
+        '受三球半': '-3.5',
+        '受三球/三球半': '-3.25',
+        '受三球': '-3',
+        '受两球半/三球': '-2.75',
+        '受两球半': '-2.5',
+        '受两球/两球半': '-2.25',
+        '受两球': '-2',
+        '受球半/两球': '-1.75',
+        '受球半': '-1.5',
+        '受一球/球半': '-1.25',
+        '受一球': '-1',
+        '受半球/一球': '-0.75',
+        '受半球': '-0.5',
+        '受平手/半球': '-0.25',
+        '平手': '0',
+        '四球': '4',
+        '三球半/四球': '3.75',
+        '三球半': '3.5',
+        '三球/三球半': '3.25',
+        '三球': '3',
+        '两球半/三球': '2.75',
+        '两球半': '2.5',
+        '两球/两球半': '2.25',
+        '两球': '2',
+        '球半/两球': '1.75',
+        '球半': '1.5',
+        '一球/球半': '1.25',
+        '一球': '1',
+        '半球/一球': '0.75',
+        '半球': '0.5',
+        '平手/半球': '0.25',
+    	}
+        con = self.wubai_connect()
+        soup = BeautifulSoup(con, 'html5lib')
+        yazhi = soup.select('.odds_yazhi')
+        trs = yazhi[0].find_all('table')[3].tbody.find_all('tr')
+        wubai_yazhi = []
+        for idx, tr in enumerate(trs):
+            if idx%3 == 0:
+                tds = tr.find_all('td')
+                dict1 = {}
+                dict1['order'] = tds[0].text.strip()
+                dict1['company'] = tds[1].span.text
+                dict1['now_up_odd'] = tds[3].text
+                now_ya = tds[4].text.split(' ')[0]
+                dict1['now_ya_odd'] = now_ya
+                dict1['now_ya_odd_shuzi'] = yazhi_level[now_ya]
+                dict1['now_down_odd'] = tds[5].text
+                dict1['now_time'] = tds[7].text
+                dict1['ori_up_odd'] = tds[9].text
+                dict1['ori_ya_odd'] = tds[10].text
+                dict1['ori_ya_odd_shuzi'] = yazhi_level[tds[10].text]
+                dict1['ori_down_odd'] = tds[11].text
+                dict1['ori_time'] = tds[12].text
+                wubai_yazhi.append(dict1)
+        return wubai_yazhi
+            
+
+
     def wubai_get_today_match(self, con):
         rs = re.findall(r'<tr zid=.*?</tr>', con, re.S)
         list1 = []
@@ -183,6 +320,7 @@ class Basedata(object):
                 future_match.append(dict1)
         return future_match
 
+
 class Adddata(object):
 
     def __init__(self):
@@ -194,7 +332,20 @@ class Adddata(object):
     '法甲': '16',
     '葡超': '63',
     '俄超': '121',
-    '日职': '109',}
+    '日职': '109',
+    '澳超': '283',
+    '欧冠': '10',
+    '欧罗巴': '18',
+    '亚冠杯': '251',
+    '日职乙': '110',
+    '英足总杯': '93',
+    '英联杯': '95',
+    '西班牙杯': '138',
+    '意杯': '135',
+    '日联杯': '223',
+    '天皇杯': '577',
+    '世界杯': '72',
+    '友谊赛': '430',}
         self.wubai_to_wangyi={
     '马竞技': '马竞',
     '塞维利': '塞维利亚',
@@ -413,9 +564,11 @@ def all_get_future_match(wubai_host_future_match,wubai_away_future_match,wangyi_
     for index in range(0,len(wubai_host_future_match)):
         if len(wangyi_host_future_match) > index:
             host_future_match.append(wangyi_host_future_match[index])
-            away_future_match.append(wangyi_away_future_match[index])
         else:
             host_future_match.append(wubai_host_future_match[index])
+        if len(wangyi_away_future_match) > index:
+            away_future_match.append(wangyi_away_future_match[index])
+        else:
             away_future_match.append(wubai_away_future_match[index])
     return host_future_match,away_future_match
 
@@ -479,6 +632,12 @@ def analyse(request):
     url = add_data.wangyi_get_page_url(host_league_name,match_round)
     wangyi_host_future_match,wangyi_away_future_match = add_data.wangyi_get_future_match(url)
     host_future_match,away_future_match = all_get_future_match(wubai_host_future_match,wubai_away_future_match,wangyi_host_future_match,wangyi_away_future_match)
+    wubai_odds_url = 'http://odds.500.com/fenxi1/json/ouzhi.php'
+    odds_data = Basedata(wubai_odds_url,wubai_hds)
+    wubai_ouzhi = odds_data.wubai_get_ouzhi(fid)
+    yazhi_url = 'http://odds.500.com/fenxi/yazhi-'+fid+'.shtml?ctype=2'
+    yazhi_data = Basedata(yazhi_url,wubai_hds)
+    wubai_yazhi = yazhi_data.wubai_get_yazhi()
     t = get_template('match/analyse.html')
     html = t.render(Context({'team': team, 
         'host_team_league_table': host_team_league_table,
@@ -495,6 +654,8 @@ def analyse(request):
         'away_recent_match_same_summary': away_recent_match_same_summary,
         'host_future_match': host_future_match,
         'away_future_match': away_future_match,
+        'wubai_ouzhi': wubai_ouzhi,
+        'wubai_yazhi': wubai_yazhi,
     }))
     return HttpResponse(html)
 
