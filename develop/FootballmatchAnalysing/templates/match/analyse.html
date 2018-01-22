@@ -49,6 +49,9 @@
               display: inline-block;
               width:40px;
 		  }
+		  .now_ya_odd_red_color{
+		  	color:red;
+		  }
       </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -549,14 +552,13 @@
 	  	  	  	  <td>{{yazhi.order}}</td>
 	  	  	  	  <td>{{yazhi.company}}</td>
 	  	  	  	  <td class="yazhi_color">{{yazhi.now_up_odd}}</td>
-	  	  	  	  <td class="now_ya_odd_color">{{yazhi.now_ya_odd}}</td>
+	  	  	  	  <td class="now_ya_odd">{{yazhi.now_ya_odd}}<div class="ya_shuzi" style="display:none;"><em>{{yazhi.now_ya_odd_shuzi}}</em><em>{{yazhi.ori_ya_odd_shuzi}}</em></div></td>
 	  	  	  	  <td class="yazhi_color">{{yazhi.now_down_odd}}</td>
 	  	  	  	  <td>{{yazhi.now_time}}</td>
 	  	  	  	  <td>{{yazhi.ori_up_odd}}</td>
 	  	  	  	  <td>{{yazhi.ori_ya_odd}}</td>
 	  	  	  	  <td>{{yazhi.ori_down_odd}}</td>
 	  	  	  	  <td>{{yazhi.ori_time}}</td>
-	  	  	  	  <div class="ya_shuzi" style="display:none;"><em>{{yazhi.now_ya_odd_shuzi}}</em><em>{{yazhi.ori_ya_odd_shuzi}}</em></div>
 	  	  	  	</tr>
 	  	  	  {% endfor %}
 	  	  	  </tbody>
@@ -667,20 +669,20 @@
 			if(now_ya_odd != ori_ya_odd){
                 if(now_ya_odd.substring(0,1) == '-' && ori_ya_odd.substring(0,1) == '-'){
                 	if(parseFloat(now_ya_odd.substring(1,now_ya_odd.length)) > parseFloat(ori_ya_odd.substring(1,ori_ya_odd.length))){
-                		$(this).parent().find('.now_ya_odd_color').css('color','red');
+                		$(this).parent().css('color','red');
                 	}else{
-                		$(this).parent().find('.now_ya_odd_color').css('color','green');
+                		$(this).parent().css('color','green');
                 	}
                 }else if(now_ya_odd.substring(0,1) != '-' && ori_ya_odd.substring(0,1) != '-'){
                     if(parseFloat(now_ya_odd) > parseFloat(ori_ya_odd)){
-                		$(this).parent().find('.now_ya_odd_color').css('color','red');
+                		$(this).parent().css('color','red');
                 	}else{
-                		$(this).parent().find('.now_ya_odd_color').css('color','green');
+                		$(this).parent().css('color','green');
                 	}
                 }else if(now_ya_odd.substring(0,1) == '-' && ori_ya_odd.substring(0,1) != '-'){
-                	$(this).parent().find('.now_ya_odd_color').css('color','green');
+                	$(this).parent().css('color','green');
                 }else if(now_ya_odd.substring(0,1) != '-' && ori_ya_odd.substring(0,1) == '-')
-                    $(this).parent().find('.now_ya_odd_color').css('color','red');
+                    $(this).parent().css('color','red');
 		    }
 		});
 		$('.ori_win_odd').each(function(){
