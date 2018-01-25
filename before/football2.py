@@ -1,13 +1,13 @@
 #coding:utf-8
 no1=['曼城']
 no2=['曼联','切尔西','利物浦','热刺','阿森纳']
-no3=['莱斯特城','埃弗顿','沃特福德']
-no4=['西汉姆联','水晶宫','斯托克城','南安普顿','西布朗维奇','伯恩利']
-no5=['纽卡斯尔','布莱顿','哈德斯菲尔德','伯恩茅斯','斯旺西']
+no3=['莱切城','埃弗顿','沃特福']
+no4=['西汉姆','水晶宫','斯托克','南安普','西布罗','伯恩利']
+no5=['纽卡','布莱顿','哈德斯','伯恩茅','斯旺西']
 
 
 
-rare_dict={'受四球': '-4',
+yazhi_level={'受四球': '-4',
         '受三球半/四球': '-3.75',
         '受三球半': '-3.5',
         '受三球/三球半': '-3.25',
@@ -44,9 +44,9 @@ rare_dict={'受四球': '-4',
 def print_rare(t):
     odd = t.split(' ')
     if len(odd) == 1:
-        print(hometeam+' '+list(rare_dict.keys())[list(rare_dict.values()).index(odd[0])]+' '+visitingteam)
+        print(hometeam+' '+list(yazhi_level.keys())[list(yazhi_level.values()).index(odd[0])]+' '+visitingteam)
     else:
-        print(hometeam+' '+list(rare_dict.keys())[list(rare_dict.values()).index(odd[0])]+' 或 '+list(rare_dict.keys())[list(rare_dict.values()).index(odd[1])]+' '+visitingteam)
+        print(hometeam+' '+list(yazhi_level.keys())[list(yazhi_level.values()).index(odd[0])]+' 或 '+list(yazhi_level.keys())[list(yazhi_level.values()).index(odd[1])]+' '+visitingteam)
 
 
 def compare(hometeam,visitingteam):

@@ -16,6 +16,46 @@ class Basedata(object):
     def __init__(self, url, header):
         self.header = header
         self.url = url
+        self.yazhi_level = {
+        '受四球': '-4.00',
+        '受三球半/四球': '-3.75',
+        '受三球半': '-3.50',
+        '受三球/三球半': '-3.25',
+        '受三球': '-3.00',
+        '受两球半/三球': '-2.75',
+        '受两球半': '-2.50',
+        '受两球/两球半': '-2.25',
+        '受两球': '-2.00',
+        '受球半/两球': '-1.75',
+        '受球半': '-1.50',
+        '受一球/球半': '-1.25',
+        '受一球': '-1.00',
+        '受半球/一球': '-0.75',
+        '受半球': '-0.50',
+        '受平手/半球': '-0.25',
+        '平手': '0.00',
+        '四球': '4.00',
+        '三球半/四球': '3.75',
+        '三球半': '3.50',
+        '三球/三球半': '3.25',
+        '三球': '3.00',
+        '两球半/三球': '2.75',
+        '两球半': '2.50',
+        '两球/两球半': '2.25',
+        '两球': '2.00',
+        '球半/两球': '1.75',
+        '球半': '1.50',
+        '一球/球半': '1.25',
+        '一球': '1.00',
+        '半球/一球': '0.75',
+        '半球': '0.50',
+        '平手/半球': '0.25',
+        }
+        self.no1=['曼城']
+        self.no2=['曼联','切尔西','利物浦','热刺','阿森纳']
+        self.no3=['莱切城','埃弗顿','沃特福']
+        self.no4=['西汉姆','水晶宫','斯托克','南安普','西布罗','伯恩利']
+        self.no5=['纽卡','布莱顿','哈德斯','伯恩茅','斯旺西']
 
     def wubai_connect(self):
         reqhd = urllib.request.Request(self.url, headers = self.header)
@@ -102,41 +142,6 @@ class Basedata(object):
         return wubai_ouzhi
 
     def wubai_get_yazhi(self):
-        yazhi_level = {
-        '受四球': '-4',
-        '受三球半/四球': '-3.75',
-        '受三球半': '-3.5',
-        '受三球/三球半': '-3.25',
-        '受三球': '-3',
-        '受两球半/三球': '-2.75',
-        '受两球半': '-2.5',
-        '受两球/两球半': '-2.25',
-        '受两球': '-2',
-        '受球半/两球': '-1.75',
-        '受球半': '-1.5',
-        '受一球/球半': '-1.25',
-        '受一球': '-1',
-        '受半球/一球': '-0.75',
-        '受半球': '-0.5',
-        '受平手/半球': '-0.25',
-        '平手': '0',
-        '四球': '4',
-        '三球半/四球': '3.75',
-        '三球半': '3.5',
-        '三球/三球半': '3.25',
-        '三球': '3',
-        '两球半/三球': '2.75',
-        '两球半': '2.5',
-        '两球/两球半': '2.25',
-        '两球': '2',
-        '球半/两球': '1.75',
-        '球半': '1.5',
-        '一球/球半': '1.25',
-        '一球': '1',
-        '半球/一球': '0.75',
-        '半球': '0.5',
-        '平手/半球': '0.25',
-    	}
         con = self.wubai_connect()
         soup = BeautifulSoup(con, 'html5lib')
         yazhi = soup.select('.odds_yazhi')
@@ -151,18 +156,104 @@ class Basedata(object):
                 dict1['now_up_odd'] = tds[3].text
                 now_ya = tds[4].text.split(' ')[0]
                 dict1['now_ya_odd'] = now_ya
-                dict1['now_ya_odd_shuzi'] = yazhi_level[now_ya]
+                dict1['now_ya_odd_shuzi'] = self.yazhi_level[now_ya]
                 dict1['now_down_odd'] = tds[5].text
                 dict1['now_time'] = tds[7].text
                 dict1['ori_up_odd'] = tds[9].text
                 dict1['ori_ya_odd'] = tds[10].text
-                dict1['ori_ya_odd_shuzi'] = yazhi_level[tds[10].text]
+                dict1['ori_ya_odd_shuzi'] = self.yazhi_level[tds[10].text]
                 dict1['ori_down_odd'] = tds[11].text
                 dict1['ori_time'] = tds[12].text
                 wubai_yazhi.append(dict1)
         return wubai_yazhi
-            
 
+    def wubai_get_guangshi(hometeam,visitingteam):
+        if hometeam in self.no1:
+            if visitingteam !='阿森纳':
+                if visitingteam in self.no2:
+                    t='1'
+                elif visitingteam in self.no3:
+                    t='2'                
+                elif visitingteam in self.no4:
+                    t='2.5'                
+                elif visitingteam in self.no5:
+                   t='2.75'
+                else:
+                    return False
+                return t
+            else:
+                t='1.25'
+                return t
+        if hometeam in self.no2:
+            if hometeam =='阿森纳' and visitingteam in self.no1:
+                t='-0.5'
+                return t
+            elif hometeam =='阿森纳' and visitingteam in self.no2:
+                t='0'
+                return t
+            if visitingteam == '阿森纳':
+                t='0.5'
+                return t
+            if visitingteam in self.no1:
+                t='-0.25'     
+            elif visitingteam in self.no2:
+                t='0.25'
+            elif visitingteam in self.no3:
+                t='1 1.25'
+            elif visitingteam in self.no4:
+                t='1.5'
+            elif visitingteam in self.no5:
+                t='1.75 2'
+            else:
+                return False
+            return t
+
+        if hometeam in self.no3:
+            if visitingteam in self.no1:
+                t='-1.5 -1.25'
+            elif visitingteam in self.no2:
+                t='-0.75'
+            elif visitingteam in self.no3:
+                t='0.25'
+            elif visitingteam in self.no4:
+                t='0.5'
+            elif visitingteam in self.no5:
+                t='0.75'
+            return t
+
+        if hometeam in no4:
+            if visitingteam in self.no1:
+                t='-1.5'
+            elif visitingteam in self.no2:
+                t='-1'
+            elif visitingteam in self.no3:
+                t='0'
+            elif visitingteam in self.no4:
+                t='0.25'
+            elif visitingteam in self.no5:
+                t='0.5'
+            return t
+
+        if hometeam in self.no5:
+            if visitingteam == '阿森纳':
+                t='-1'
+                return t
+            if visitingteam == '伯恩利':
+                t='0.25'
+                return t
+            if visitingteam in self.no1:
+                t='-1.75'
+            elif visitingteam in self.no2:
+                t='-1.25'
+            elif visitingteam in self.no3:
+                t='-0.25'
+            elif visitingteam in self.no4:
+                t='0'
+            elif visitingteam in self.no5:
+                t='0.25'
+            else:
+                return False
+            return t
 
     def wubai_get_today_match(self, con):
         rs = re.findall(r'<tr zid=.*?</tr>', con, re.S)
@@ -638,6 +729,9 @@ def analyse(request):
     yazhi_url = 'http://odds.500.com/fenxi/yazhi-'+fid+'.shtml?ctype=2'
     yazhi_data = Basedata(yazhi_url,wubai_hds)
     wubai_yazhi = yazhi_data.wubai_get_yazhi()
+    wubai_guangshi = yazhi_data.wubai_get_guangshi(team[0],team[1])
+    if not guangshi:
+        wubai_guangshi = '无'
     t = get_template('match/analyse.html')
     html = t.render(Context({'team': team, 
         'host_team_league_table': host_team_league_table,
@@ -656,6 +750,7 @@ def analyse(request):
         'away_future_match': away_future_match,
         'wubai_ouzhi': wubai_ouzhi,
         'wubai_yazhi': wubai_yazhi,
+        'wubai_guangshi': wubai_guangshi,
     }))
     return HttpResponse(html)
 
