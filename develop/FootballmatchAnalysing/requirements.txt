@@ -1,5 +1,5 @@
 Django==1.10
-djangorestframework==3.7.3
+djangorestframework==3.11.2
 Markdown==2.6.9
 django_filter==1.1.0
 beautifulsoup4==4.6.0
